@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="small-12 columns">
+        <h3>Radera Pizzeria</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+        <p data-ng-repeat="p in admin.allPizzerias">{{ p.title }} <a href="" data-ng-click="admin.deletePizzeria(p.id)" class="tiny button alert">Radera</a></p>
+    </div>
+</div>

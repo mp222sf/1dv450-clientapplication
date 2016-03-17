@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="small-12 columns">
+        <h3>Redigera {{ admin.dishById[0].name }}</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+		<form method="post">
+			<p>Namn:</p>
+			<input type="text" id="editName" name="editName" data-ng-model="admin.dishById[0].name" />
+			<p>Ingredienser:</p>
+			<input type="text" id="editIngredients" name="editIngredients" data-ng-model="admin.dishById[0].ingredients" />
+			<p>Pris:</p>
+			<input type="number" id="editPrice" name="editPrice" data-ng-model="admin.dishById[0].price" />
+			<br>
+			<input type="submit" name="change" value="Ändra" data-ng-click="admin.editDish(admin.dishById[0].id, admin.dishById[0].name, admin.dishById[0].ingredients, admin.dishById[0].price)" />
+		</form>
+	</div>
+</div>

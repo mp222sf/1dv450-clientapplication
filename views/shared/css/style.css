@@ -1,0 +1,18 @@
+.myBody {
+    margin: auto;
+    max-width: 800px;
+    padding:20px;
+}
+
+.container {
+    width: 100%;
+}
+
+.angular-google-map-container { 
+    height: 400px;
+    min-height: 100px;
+    max-height: 500px;
+    min-width:100px;
+    max-width: 700px;
+    vertical-align: top;
+}

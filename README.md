@@ -1,0 +1,15 @@
+Ändringar i API:et under arbetets gång.
+- La till koordinater till Pizzerias All.
+- La till Id till Tags All.
+- La till koordinater till Tags Pizzerias (Id).
+- Vid skapande av pizzeria anges nu Adress istället för Latitude och Longitude.
+- Pizzeria All, la till ID.
+- Pizzeria All, la till Adress.
+- Pizzeria (id), la till Adress.
+- Pizzeria (id), la till Taggar.
+- Position Update, ändrade så att man ändra på Adress istället för Latitude och Longitude.
+- Tags Pizzerias, la till Adress.
+- Pizzerias Menus (Id), la till Id till både Menu och Dish.
+- Menus (Id), la till Id till både Menu och Dish.
+- Hämta en specifik Dish.
+- La till Menu och Dish i All Pizzerias.

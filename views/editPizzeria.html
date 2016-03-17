@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="small-12 columns">
+        <h3>Redigera {{ admin.onePizzeria[0].title }}</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-2 columns"><strong>Adress</strong></div>
+    <div class="small-10 columns">
+        <div class="row">
+            <div class="small-7 columns"><p>{{ admin.onePizzeria[0].address }}</p></div>
+            <div class="small-3 columns"><a data-ng-href="admin/editPizzeria/{{admin.onePizzeria[0].id}}/position" class="tiny button">Redigera</a></div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="small-12 columns"><a data-ng-href="admin/createMenu/{{admin.onePizzeria[0].id}}" class="tiny button">Ny meny</a></div>
+</div>
+<div class="row">
+    <div class="small-2 columns"><strong>Menyer</strong></div>
+    <div class="small-10 columns">
+        <div class="row" data-ng-repeat="menu in admin.menusByPizzeria">
+            <div class="small-7 columns"><p>{{menu.name}}</p></div>
+            <div class="small-3 columns"><a data-ng-href="admin/editMenu/{{menu.id}}" class="tiny button">Redigera</a> <a data-ng-click="admin.deleteMenu(menu.id)" class="tiny button alert">Ta bort</a></div>
+        </div>
+    </div>
+</div>

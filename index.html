@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html data-ng-app="demoApp">
+ <head>
+  <title>Pizzakartan</title>
+  <base href="/">
+  <link rel="stylesheet" type="text/css" href="views/shared/css/style.css">
+  <link rel="stylesheet" href="views/shared/foundation/foundation.css" />
+ </head>
+ 
+ <body class="myBody">
+  <br>
+  <img src="views/shared/pics/Pizzakartanheader.png" />
+  <div data-ng-include src="'views/shared/menu.html'"></div>
+  
+  <div data-ng-view></div>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
+  <script src="views/shared/angular/angular-google-maps.js"></script>
+  <script src="views/shared/angular/angular-flash.min.js"></script>
+  <script src="views/shared/angular/angular-simple-logger.js"></script>
+  <script src="views/shared/angular/lodash.js"></script>
+  <script src="views/shared/angular/app.js"></script>
+  <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyAYBbPRzrvT8z0pURv0cZiEOQizUf3WctI'></script>
+  
+  <!-- Services -->
+  <script src="services/PizzaKartaService.js"></script> 
+  
+  <!-- Controllers -->
+  <script src="controllers/MapController.js"></script>
+  <script src="controllers/LoginController.js"></script>
+  <script src="controllers/AdminController.js"></script>
+ </body>
+</html>

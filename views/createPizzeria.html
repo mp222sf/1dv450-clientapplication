@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="small-12 columns">
+		<h3>Skapa Pizzeria</h3>
+	</div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns">
+		<form method="post">
+			<p>Namn:</p>
+			<input type="text" id="createName" name="createName" data-ng-model="admin.name" />
+		
+			<p>Adress:</p>
+			<input type="text" id="createAddress" name="createAddress" data-ng-model="admin.address" />
+			
+			<p>Tagg:</p>
+			<input type="text" id="createTag1" name="createTag1" data-ng-model="admin.tagOne" />
+			<input type="text" id="createTag2" name="createTag2" data-ng-model="admin.tagTwo" />
+			<input type="text" id="createTag3" name="createTag3" data-ng-model="admin.tagThree" />
+			<input type="text" id="createTag4" name="createTag4" data-ng-model="admin.tagFour" />
+			<input type="text" id="createTag5" name="createTag5" data-ng-model="admin.tagFive" />
+			<br>
+			<input type="submit" name="login" value="Skapa" data-ng-click="admin.createPizzeria(admin.name, admin.address, admin.tagOne, admin.tagTwo, admin.tagThree, admin.tagFour, admin.tagFive)" />
+		</form>
+	</div>
+</div>

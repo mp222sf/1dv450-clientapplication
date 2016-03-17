@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="small-12 columns">
+        <h3>Redigera {{ admin.menuById[0].name }}</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 columns"><a data-ng-href="admin/createDish/{{admin.menuById[0].id}}" class="tiny button">Ny maträtt</a></div>
+</div>
+
+<div class="row">
+    <div class="small-2 columns"><strong>Maträtter</strong></div>
+    <div class="small-10 columns">
+        <div class="row" data-ng-repeat="dish in admin.menuById[0].dishes">
+            <div class="small-7 columns"><p>{{dish.name}}</p></div>
+            <div class="small-3 columns"><a data-ng-href="admin/editDish/{{dish.id}}" class="tiny button">Redigera</a> <a data-ng-click="admin.deleteDish(dish.id)" class="tiny button alert">Ta bort</a></div>
+        </div>
+    </div>
+</div>
