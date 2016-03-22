@@ -1,4 +1,9 @@
 # Pizzakartan
+Applikationen är en samlingsplats för pizzeriaägare och pizzakonsumenter.
+Tanken är att man som pizzeriaägare ska kunna lägga in sin pizzeria och alla dess menyer/maträtter.
+Som användare ska man kunna bläddra runt bland pizzerior och se deras olika maträtter, samt finna information om pizzerian.
+Applikationen är skapad då jag som själv är en pizzakonsument inte alltid hittar menyer till pizzerior på nätet.
+
 ## Installation
 1. Kör igång API:et. [Ladda ner här](https://github.com/mp222sf/1dv450-mp222sf). Hur man startar står under "Installation>Steg-för-steg".
 2. När API är igång så kommer en ruta upp med API-länken.
