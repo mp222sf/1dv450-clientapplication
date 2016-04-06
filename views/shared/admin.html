@@ -1,0 +1,23 @@
+<h4>Admin (Inloggad) <a data-ng-click="map.logout()">Logga ut</a></h4>
+		    
+<div data-ng-show="map.adminStart">
+
+    <div data-ng-show="map.successBox" class="successBox">
+        {{ map.successMessage }}
+    </div>
+    
+    <h5>Pizzeria</h5>
+    <div class="row">
+        <div class="small-12 columns"><a class="button" data-ng-click="map.showCreatePizzeria()">Skapa</a> <a class="button" data-ng-click="map.showEditPizzeria()">Redigera</a> <a class="button" data-ng-click="map.showDeletePizzeria()">Radera</a></div>
+    </div>
+    
+    <h5>Meny</h5>
+    <div class="row">
+        <div class="small-12 columns"><a class="button" data-ng-click="map.showCreateMenu()">Skapa</a> <a class="button" data-ng-click="map.showEditMenu()">Redigera</a> <a class="button" data-ng-click="map.showDeleteMenu()">Radera</a></div>
+    </div>
+    
+    <h5>Maträtt</h5>
+    <div class="row">
+        <div class="small-12 columns"><a class="button" data-ng-click="map.showCreateDish()">Skapa</a> <a class="button" data-ng-click="map.showEditDish()">Redigera</a> <a class="button" data-ng-click="map.showDeleteDish()">Radera</a></div>
+    </div>
+</div>

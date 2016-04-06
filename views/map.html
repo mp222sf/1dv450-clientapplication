@@ -1,44 +1,79 @@
-<div class="row">
-    <div class="small-12 columns">
-        <h3>Karta</h3>
-        <div>
-            <input role="search" id="search-box" placeholder="Sök bland pizzerior" type="text" data-ng-model="filter.name" />
-        </div>
-    </div>
-</div>
+<div data-ng-include src="'views/shared/search.html'"></div>
 
 <div class="row">
-    <div class="small-9 columns">
-        <div class="flex-video">
-            <ui-gmap-google-map center='map.start.center' zoom='map.start.zoom'>
-                <ui-gmap-markers models="map.markersList | filter:filter.name" fit="true" coords="'self'" icon="{url: 'views/shared/pics/Pizza-icon.png' }">
-                    <ui-gmap-windows show="show" templateUrl="'/views/shared/mapWindow.html'">
-                        <div ng-non-bindable>
-                            <h4>{{ title }}</h4>
-                            {{ address }}
-                            <br>
-                            <br>
-                            <h5>{{ menus[0].name }}</h5>
-                            {{ menus[0].dishes[0].name }}<br>
-                            {{ menus[0].dishes[1].name }}<br>
-                            {{ menus[0].dishes[2].name }}<br>
-                            
-                        </div>
-                    </ui-gmap-windows>
-                </ui-gmap-markers>
-            </ui-gmap-google-map>
-        </div>
+    <div class="small-5 columns">
+        <div data-ng-include src="'views/shared/map.html'"></div>
     </div>
     
     <div class="small-3 columns">
-        <strong>Pizzerior</strong>
-        <div data-ng-repeat="p in map.markersList | filter:filter.name">{{ p.title }}</div>
+        <div data-ng-show="map.pizzeriasShow">
+            <div data-ng-include src="'views/show/showPizzerias.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.pizzeriaOneShow">
+            <div data-ng-include src="'views/show/showOnePizzeria.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.menuOneShow">
+            <div data-ng-include src="'views/show/showOneMenu.html'"></div>
+        </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="small-12 columns">
-        <span>Taggar: </span>
-        <a href="#" data-ng-repeat="tag in map.tagsList" data-ng-click="map.getMarkersByTag(tag.id)">{{ tag.name }} </a>
+    
+    <div class="small-4 columns">
+        <div data-ng-show="!map.isLoggedIn">
+            <div data-ng-include src="'views/shared/login.html'"></div>
+		</div>
+		
+		<div data-ng-show="map.isLoggedIn">
+		    <div data-ng-include src="'views/shared/admin.html'"></div>
+	    </div>
+	    
+	    <div data-ng-show="map.createPizzeria">
+	        <div data-ng-include src="'views/create/createPizzeria.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.createMenu">
+	        <div data-ng-include src="'views/create/createMenu.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.createDish">
+	        <div data-ng-include src="'views/create/createDish.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.deletePizzeriaShow">
+	        <div data-ng-include src="'views/delete/deletePizzeria.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.deleteMenuShow">
+	        <div data-ng-include src="'views/delete/deleteMenu.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.deleteDishShow">
+	        <div data-ng-include src="'views/delete/deleteDish.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.editPizzeriaShow">
+	        <div data-ng-include src="'views/edit/editPizzeria.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.editPizzeriaShowOne">
+	        <div data-ng-include src="'views/edit/editPizzeriaOne.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.editMenuShow">
+	        <div data-ng-include src="'views/edit/editMenu.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.editMenuShowOne">
+	        <div data-ng-include src="'views/edit/editMenuOne.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.editDishShow">
+	        <div data-ng-include src="'views/edit/editDish.html'"></div>
+        </div>
+        
+        <div data-ng-show="map.editDishShowOne">
+	        <div data-ng-include src="'views/edit/editDishOne.html'"></div>
+        </div>
     </div>
 </div>

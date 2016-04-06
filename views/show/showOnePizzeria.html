@@ -1,0 +1,6 @@
+<div class="row">
+    <div class="small-9 columns"><h4>{{map.pizzeriaOneObject.title}}</h4></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAllPizzerias()">Tillbaka</a></div>
+</div>
+<h5>Menyer</h5>
+<div data-ng-repeat="m in map.allMenus | filter:{pizzeria_id: map.pizzeriaOneObject.id}"><a data-ng-click="map.showOneMenu(m.id)">{{m.name}}</a></div>

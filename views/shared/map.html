@@ -1,0 +1,18 @@
+<h4>Karta</h4>
+<div class="flex-video">
+    <ui-gmap-google-map center='map.start.center' zoom='map.start.zoom'>
+        <ui-gmap-markers models="map.getMarkers() | filter:filter.name" fit="true" coords="'self'" icon="{url: 'views/shared/pics/Pizza-icon.png' }">
+            <ui-gmap-windows show="show">
+                <div ng-non-bindable>
+                    <h4>{{ title }}</h4>
+                    {{ address }}
+                    
+                </div>
+            </ui-gmap-windows>
+        </ui-gmap-markers>
+    </ui-gmap-google-map>
+</div>
+<div>
+    <span>Taggar: </span>
+    <a href="#" data-ng-repeat="tag in map.tagsList" data-ng-click="map.getMarkersByTag(tag.id)">{{ tag.name }} </a>
+</div>

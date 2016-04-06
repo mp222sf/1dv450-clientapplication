@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Redigera en maträtt</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAdminStart()">Tillbaka</a></div>
+</div>
+
+<br>
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<div class="row">
+    <div class="small-4 columns">
+        <p>Pizzeria:</p>
+    </div>
+    <div class="small-8 columns">
+        <select name="editPizzeriaId" data-ng-model="map.selectEditDish.pizzeriaid" required>
+            <option ng-repeat="p in map.markersList" value="{{p.id}}">{{p.title}}</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-4 columns">
+        <p>Menyer:</p>
+    </div>
+    <div class="small-8 columns">
+        <select name="editMenuId" data-ng-model="map.selectEditDish.menuid" required>
+            <option ng-repeat="m in map.allMenus | filter:{pizzeria_id: map.selectEditDish.pizzeriaid}" value="{{m.id}}">{{m.name}}</option>
+        </select>
+    </div>
+</div>
+
+<strong>Maträtter</strong>
+<div ng-repeat="d in map.allDishes | filter:{menu_id: map.selectEditDish.menuid}">
+    <div class="row">
+        <div class="small-10 columns">{{d.name}}</div>
+        <div class="small-2 columns"><a ng-click="map.showEditDishOne(d.id)">Ändra</a></div> 
+    </div>
+</div>

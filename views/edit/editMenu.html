@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Redigera en meny</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAdminStart()">Tillbaka</a></div>
+</div>
+
+<br>
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<div class="row">
+    <div class="small-4 columns">
+        <p>Pizzeria:</p>
+    </div>
+    <div class="small-8 columns">
+        <select name="editPizzeriaId" data-ng-model="map.selectEditMenu.pizzeriaid" required>
+            <option ng-repeat="p in map.markersList" value="{{p.id}}">{{p.title}}</option>
+        </select>
+    </div>
+</div>
+
+<strong>Menyer</strong>
+<div ng-repeat="m in map.allMenus | filter:{pizzeria_id: map.selectEditMenu.pizzeriaid}">
+    <div class="row">
+        <div class="small-10 columns">{{m.name}}</div>
+        <div class="small-2 columns"><a ng-click="map.showEditMenuOne(m.id)">Ändra</a></div> 
+    </div>
+</div>

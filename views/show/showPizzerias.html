@@ -1,0 +1,2 @@
+<h4>Pizzerior</h4>
+<div data-ng-repeat="p in map.getMarkers() | filter:filter.name"><a data-ng-click="map.showOnePizzeria(p.id)">{{p.title}}</a></div>

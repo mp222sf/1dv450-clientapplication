@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Redigera {{ map.editPizzeriaObject.title }}</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showEditPizzeria()">Tillbaka</a></div>
+</div>
+
+<br>
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<form name="map.editPizzeriaForm" method="post">
+	<div>
+		<span class="error" ng-show="editPizzeriaForm.createAddress.$touched && editPizzeriaForm.createAddress.$invalid">Du måste ange en adress.</span>
+	</div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Adress:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createAddress" name="createAddress" data-ng-model="map.editPizzeriaObject.address" required />
+        </div>
+    </div>
+
+	<br>
+	<input ng-disabled="map.editPizzeriaForm.createAddress.$invalid" type="submit" name="edit" value="Ändra" data-ng-click="map.editPosition(map.editPizzeriaObject.position_id, map.editPizzeriaObject.address)" />
+</form>

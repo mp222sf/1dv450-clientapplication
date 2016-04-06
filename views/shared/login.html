@@ -1,0 +1,19 @@
+<h4>Admin (Logga in)</h4>
+<p class="error">{{ map.message }}</p>
+
+<form name="map.loginForm" method="post"> 
+    <div>
+		<span class="error" ng-show="map.loginForm.loginUsername.$touched && map.loginForm.loginUsername.$invalid">Du måste ange ett användarnamn.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="map.loginForm.loginPassword.$touched && map.loginForm.loginPassword.$invalid">Du måste ange ett lösenord.</span>
+	</div>
+
+	<span>Användarnamn:</span>
+	<input type="text" id="loginUsername" name="loginUsername" data-ng-model="filter.username" />
+
+	<span>Lösenord:</span>
+	<input type="password" id="loginPassword" name="loginPassword" data-ng-model="filter.password" />
+	
+	<input ng-disabled="map.loginForm.loginUsername.$invalid || map.loginForm.loginPassword.$invalid" type="submit" name="login" value="Logga in" data-ng-click="map.toLogin(filter.username,filter.password)" />
+</form>

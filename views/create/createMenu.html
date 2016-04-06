@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Skapa en meny</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAdminStart()">Tillbaka</a></div>
+</div>
+
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<form name="map.createMenuForm" method="post">
+	<div>
+		<span class="error" ng-show="map.createMenuForm.createName.$touched && map.createMenuForm.createName.$invalid">Du måste ange ett namn.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="map.createMenuForm.createPizzeriaId.$touched && map.createMenuForm.createPizzeriaId.$invalid">Du måste välja en pizzeria.</span>
+	</div>
+	
+	<div class="row">
+    	<div class="small-4 columns">
+    	    <p>Namn:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createName" name="createName" data-ng-model="map.formCreateMenu.name" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Pizzeria:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <select name="createPizzeriaId" data-ng-model="map.formCreateMenu.pizzeriaid" required>
+                <option ng-repeat="x in map.markersList" value="{{x.id}}">{{x.title}}</option>
+            </select>
+        </div>
+    </div>
+    
+	<br>
+	<input ng-disabled="map.createMenuForm.createName.$invalid || map.createMenuForm.createPizzeriaId.$invalid" type="submit" name="create" value="Skapa" data-ng-click="map.newMenu(map.formCreateMenu.name, map.formCreateMenu.pizzeriaid)" />
+</form>

@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Skapa en pizzeria</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAdminStart()">Tillbaka</a></div>
+</div>
+
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<form name="map.createPizzeriaForm" method="post">
+	<div>
+		<span class="error" ng-show="createPizzeriaForm.createName.$touched && createPizzeriaForm.createName.$invalid">Du måste ange ett namn.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="createPizzeriaForm.createAddress.$touched && createPizzeriaForm.createAddress.$invalid">Du måste ange en adress.</span>
+	</div>
+	
+	<div class="row">
+    	<div class="small-4 columns">
+    	    <p>Namn:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createName" name="createName" data-ng-model="map.formCreatePizzeria.name" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Adress:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createAddress" name="createAddress" data-ng-model="map.formCreatePizzeria.address" required />
+        </div>
+    </div>
+
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Tagg:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createTag1" name="createTag1" data-ng-model="map.formCreatePizzeria.tagOne" />
+        	<input type="text" id="createTag2" name="createTag2" data-ng-model="map.formCreatePizzeria.tagTwo" />
+        	<input type="text" id="createTag3" name="createTag3" data-ng-model="map.formCreatePizzeria.tagThree" />
+        	<input type="text" id="createTag4" name="createTag4" data-ng-model="map.formCreatePizzeria.tagFour" />
+        	<input type="text" id="createTag5" name="createTag5" data-ng-model="map.formCreatePizzeria.tagFive" />
+        </div>
+    </div>
+	<br>
+	<input ng-disabled="map.createPizzeriaForm.createName.$invalid || map.createPizzeriaForm.createAddress.$invalid" type="submit" name="create" value="Skapa" data-ng-click="map.newPizzeria(map.formCreatePizzeria.name, map.formCreatePizzeria.address, map.formCreatePizzeria.tagOne, map.formCreatePizzeria.tagTwo, map.formCreatePizzeria.tagThree, map.formCreatePizzeria.tagFour, map.formCreatePizzeria.tagFive)" />
+</form>

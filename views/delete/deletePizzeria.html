@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Radera en pizzeria</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAdminStart()">Tillbaka</a></div>
+</div>
+
+<br>
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<strong>Pizzerior</strong>
+<div ng-repeat="p in map.markersList">
+    <div class="row">
+        <div class="small-10 columns">{{p.title}}</div>
+        <div class="small-2 columns"><a ng-confirm-click="Vill du radera {{p.title}}?" ng-click="map.deletePizzeria(p.id)">Radera</a></div> 
+    </div>
+</div>

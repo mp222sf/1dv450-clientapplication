@@ -1,6 +1,10 @@
+#header {
+    margin: auto;
+    text-align: center;
+}
+
 .myBody {
     margin: auto;
-    max-width: 800px;
     padding:20px;
 }
 
@@ -15,4 +19,30 @@
     min-width:100px;
     max-width: 700px;
     vertical-align: top;
+}
+
+.successBox {
+    padding: 3px;
+    background-color: green;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.errorBox {
+    padding: 3px;
+    background-color: red;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.error {
+    color: red;
+}
+
+.small-text {
+    font-size: 60%;
+}
+
+.inline-block {
+    display: inline-block;
 }

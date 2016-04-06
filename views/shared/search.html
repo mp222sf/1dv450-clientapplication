@@ -1,0 +1,10 @@
+<div class="row">
+    <form name="map.searchForm" method="post"> 
+        <div class="small-11 columns">
+        	<input type="text" id="searchBox" name="searchBox" placeholder="Sök bland pizzerior" data-ng-model="map.formSearch.word" />
+    	</div>
+    	<div class="small-1 columns">
+        	<input ng-disabled="map.searchForm.searchBox.$invalid" class="button" type="submit" name="search" value="Sök" data-ng-click="map.search(map.formSearch.word)" />
+        </div>
+    </form>
+</div>

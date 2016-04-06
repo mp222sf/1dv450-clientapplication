@@ -5,12 +5,14 @@
   <base href="/">
   <link rel="stylesheet" type="text/css" href="views/shared/css/style.css">
   <link rel="stylesheet" href="views/shared/foundation/foundation.css" />
+  <meta charset="utf-8">
  </head>
  
  <body class="myBody">
   <br>
-  <img src="views/shared/pics/Pizzakartanheader.png" />
-  <div data-ng-include src="'views/shared/menu.html'"></div>
+  <div id="header">
+   <img src="views/shared/pics/Pizzakartanheader.png" />
+  </div>
   
   <div data-ng-view></div>
   
@@ -29,7 +31,5 @@
   
   <!-- Controllers -->
   <script src="controllers/MapController.js"></script>
-  <script src="controllers/LoginController.js"></script>
-  <script src="controllers/AdminController.js"></script>
  </body>
 </html>

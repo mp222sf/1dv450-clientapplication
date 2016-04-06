@@ -2496,8 +2496,7 @@ select {
 
 .flex-video {
   position: relative;
-  height: 0;
-  padding-bottom: 75%;
+  height: auto;
   margin-bottom: 1rem;
   overflow: hidden; }
   .flex-video iframe,

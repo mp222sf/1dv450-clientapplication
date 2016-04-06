@@ -2,27 +2,71 @@ angular
   .module("demoApp")
   .factory('PizzaKartaService', PizzaKartaService);
 
-PizzaKartaService.$inject = ['$http', '$location', '$route'];
+PizzaKartaService.$inject = ['$http', '$cookies', '$cookieStore', 'ApiConfig'];
 
-  function PizzaKartaService($http, $location, $route) {
+  function PizzaKartaService($http, $cookies, $cookieStore, ApiConfig) {
     
-    // Path to the API.
-    var APIpath = 'https://webbramverk-1dv450-mp222sf.c9users.io';
-    var APIkey = '83f8f2cebf797ef2a8594fc6f081e61a4eef892e';
+    var loginCookie = $cookieStore.get('loginSession');
     
-    var onePizzeria = [];
     var markersList = [];
     var tagsList = [];
-    var menusList = [];
-    var dishList = [];
+    
+    function postHttp(link, data, callback) {
+      var config = {
+                      headers: { 
+                        "Accept" : "application/json",
+                        "Content-Type" : "application/json"
+                      }
+                    };
+      
+      $http.post(link, data, config)
+      .then(function(response){ 
+        callback(response);
+      }, function (error) {
+        callback(error);
+      });
+    }
+    
+    function deleteHttp(link, data, callback) {
+      var config = {
+                      headers: { 
+                        "Accept" : "application/json",
+                        "Content-Type" : "application/json"
+                      }
+                    };
+      
+      $http.delete(link, data, config)
+      .then(function(response){ 
+        callback(response);
+      }, function (error) {
+        callback(error);
+      });
+    }
+    
+    function putHttp(link, data, callback) {
+      var config = {
+                      headers: { 
+                        "Accept" : "application/json",
+                        "Content-Type" : "application/json"
+                      }
+                    };
+      
+      $http.put(link, data, config)
+      .then(function(response){ 
+        callback(response);
+      }, function (error) {
+        callback(error);
+      });
+    }
     
     // Creates a Marker object.
-    function createMarker (id, name, lat, lng, address, tags, menus) {
+    function createMarker (id, name, lat, lng, address, tags, menus, position_id) {
       var ret = {
         latitude: lat,
         longitude: lng,
         title: name,
         id: id,
+        position_id: position_id,
         address: address,
         tags: tags,
         menus : menus
@@ -64,43 +108,38 @@ PizzaKartaService.$inject = ['$http', '$location', '$route'];
       
       return ret;
     }
+    
+    // Creates a list of Pizzerias
+    function createPizzeriaList(data) {
+      for (var pizzeria in data)
+      {
+        var menus = [];
+        for (var menu in data[pizzeria].menus)
+        {
+          var dishes = [];
+          for (var dish in data[pizzeria].menus[menu].dishes)
+          {
+            dishes.push(createDish(data[pizzeria].menus[menu].dishes[dish].id, data[pizzeria].menus[menu].dishes[dish].name, data[pizzeria].menus[menu].dishes[dish].ingredients, data[pizzeria].menus[menu].dishes[dish].price));
+          }
+          menus.push(createMenu(data[pizzeria].menus[menu].id, data[pizzeria].menus[menu].name, dishes));
+        }
+        markersList.push(createMarker(data[pizzeria].id, data[pizzeria].name, data[pizzeria].latitude, data[pizzeria].longitude, data[pizzeria].address, undefined, menus, data[pizzeria].position_id));
+      }
+    }
 
     // GET: Pizzeria, all
     function fetchPizzerias(){
       markersList = [];
-      $http.get(APIpath + "/api/v1/pizzerias?key=" + APIkey)
+      $http.get(ApiConfig.path + "pizzerias" + ApiConfig.key)
       .then(function(response){ 
-        for (pizzeria in response.data.pizzerias)
-        {
-          var menus = [];
-          for (menu in response.data.pizzerias[pizzeria].menus)
-          {
-            var dishes = [];
-            for (dish in response.data.pizzerias[pizzeria].menus[menu].dishes)
-            {
-              dishes.push(createDish(response.data.pizzerias[pizzeria].menus[menu].dishes[dish].id, response.data.pizzerias[pizzeria].menus[menu].dishes[dish].name, response.data.pizzerias[pizzeria].menus[menu].dishes[dish].ingredients, response.data.pizzerias[pizzeria].menus[menu].dishes[dish].price));
-            }
-            menus.push(createMenu(response.data.pizzerias[pizzeria].menus[menu].id, response.data.pizzerias[pizzeria].menus[menu].name, dishes));
-          }
-          markersList.push(createMarker(response.data.pizzerias[pizzeria].id, response.data.pizzerias[pizzeria].name, response.data.pizzerias[pizzeria].latitude, response.data.pizzerias[pizzeria].longitude, response.data.pizzerias[pizzeria].address, undefined, menus));
-        }
+        createPizzeriaList(response.data.pizzerias);
       });
-    }
-    
-    // GET: Pizzeria, id
-    function fetchOnePizzeria(id){
-      onePizzeria = [];
-      $http.get(APIpath + "/api/v1/pizzerias/" + id + "?key=" + APIkey)
-      .then(function(response){ 
-        onePizzeria.push(createMarker(response.data.pizzeria.id, response.data.pizzeria.name, response.data.pizzeria.position.latitude, response.data.pizzeria.position.longitude, response.data.pizzeria.position.address, response.data.pizzeria.tags));
-      });
-      
     }
 
     // GET: Tags, all
     function fetchTags(){
       tagsList = [];
-      $http.get(APIpath + "/api/v1/tags?key=" + APIkey)
+      $http.get(ApiConfig.path + "tags" + ApiConfig.key)
       .then(function(response){ 
         for (tag in response.data.tags)
         {
@@ -112,59 +151,23 @@ PizzaKartaService.$inject = ['$http', '$location', '$route'];
     // GET: Pizzeria, all, by Tag
     function fetchPizzeriasByTag(id){
       markersList = [];
-      $http.get(APIpath + "/api/v1/tags/" + id + "/pizzerias?key=" + APIkey)
+      $http.get(ApiConfig.path + "tags/" + id + "/pizzerias" + ApiConfig.key)
       .then(function(response){ 
-        for (pizzeria in response.data.pizzerias)
-        {
-          markersList.push(createMarker(pizzeria, response.data.pizzerias[pizzeria].name, response.data.pizzerias[pizzeria].latitude, response.data.pizzerias[pizzeria].longitude, response.data.pizzerias[pizzeria].address));
-        }
+        createPizzeriaList(response.data.pizzerias);
       });
     }
     
-    // GET: Menu, all, by Pizzeria
-    function fetchMenusByPizzeria(id){
-      menusList = [];
-      $http.get(APIpath + "/api/v1/pizzerias/" + id + "/menus?key=" + APIkey)
+    // GET: Pizzeria, by Search word
+    function fetchPizzeriasBySearchWord(word){
+      markersList = [];
+      $http.get(ApiConfig.path + "search/" + word + ApiConfig.key)
       .then(function(response){ 
-        
-        for (menu in response.data.menus)
-        {
-          var dishes = [];
-          for (dish in response.data.menus[menu].dishes)
-          {
-            dishes.push(createDish(response.data.menus[menu].dishes[dish].id, response.data.menus[menu].dishes[dish].name, response.data.menus[menu].dishes[dish].ingredients, response.data.menus[menu].dishes[dish].price));
-          }
-          menusList.push(createMenu(response.data.menus[menu].id, response.data.menus[menu].name, dishes));
-        }
-      });
-    }
-    
-    // GET: Menu, by Id
-    function fetchMenusById(id){
-      menusList = [];
-      $http.get(APIpath + "/api/v1/menus/" + id + "?key=" + APIkey)
-      .then(function(response){ 
-        
-          var dishes = [];
-          for (dish in response.data.menu.dishes)
-          {
-            dishes.push(createDish(response.data.menu.dishes[dish].id, response.data.menu.dishes[dish].name, response.data.menu.dishes[dish].ingredients, response.data.menu.dishes[dish].price));
-          }
-          menusList.push(createMenu(response.data.menu.id, response.data.menu.name, dishes));
-      });
-    }
-    
-    // GET: Dish, by Id
-    function fetchDishById(id){
-      dishList = [];
-      $http.get(APIpath + "/api/v1/dishes/" + id + "?key=" + APIkey)
-      .then(function(response){ 
-        dishList.push(createDish(response.data.dish.id, response.data.dish.name, response.data.dish.ingredients, response.data.dish.price));
+        createPizzeriaList(response.data.pizzerias);
       });
     }
     
     // POST: Pizzeria.
-    function postPizzeria(username, password, name, address, tagOne, tagTwo, tagThree, tagFour, tagFive){
+    function postPizzeria(name, address, tagOne, tagTwo, tagThree, tagFour, tagFive, callback){
       var tagObjects = [];
       
       if (tagOne != "")
@@ -188,9 +191,8 @@ PizzaKartaService.$inject = ['$http', '$location', '$route'];
         tagObjects.push({ name : tagFive });
       }
       
-      
-
       var data = JSON.stringify({
+                    token : loginCookie,
                     pizzeria : {
                       name : name,
                       position : {
@@ -203,51 +205,27 @@ PizzaKartaService.$inject = ['$http', '$location', '$route'];
                       tags : tagObjects
                     }
                   });
-
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
       
-      $http.post(APIpath + "/api/v1/pizzerias?key=" + APIkey, data, config)
-      .then(function(response){ 
-        $location.path('/admin/successCreate');
-      }, function (error) {
-        $location.path('/error');
-      });
+      postHttp(ApiConfig.path + "pizzerias" + ApiConfig.key, data, callback);
     }
     
     // POST: Menu.
-    function postMenu(username, password, name, pizzeriaId){
+    function postMenu(name, pizzeriaId, callback){
       var data = JSON.stringify({
+                    token : loginCookie,
                     menu : {
                       name : name,
                       pizzeria_id : pizzeriaId
                     }
                   });
-
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
       
-      $http.post(APIpath + "/api/v1/menus?key=" + APIkey, data, config)
-      .then(function(response){ 
-        $location.path('/admin/successCreate');
-      }, function (error) {
-        $location.path('/error');
-      });
+      postHttp(ApiConfig.path + "menus" + ApiConfig.key, data, callback);
     }
     
     // POST: Dish.
-    function postDish(username, password, name, ingredients, price, menuId){
+    function postDish(name, ingredients, price, menuId, callback){
       var data = JSON.stringify({
+                    token : loginCookie,
                     dish : {
                       name : name,
                       ingredients : ingredients,
@@ -256,154 +234,109 @@ PizzaKartaService.$inject = ['$http', '$location', '$route'];
                     }
                   });
 
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
-      
-      $http.post(APIpath + "/api/v1/dishes?key=" + APIkey, data, config)
-      .then(function(response){ 
-        $location.path('/admin/successCreate');
-      }, function (error) {
-        $location.path('/error');
-      });
-    }
-    
-    // POST: PizzeriaTag.
-    function postPizzeriaTag(username, password, pizzeriaId, tagId){
-      var data = JSON.stringify({
-                    pizzeriaTag : {
-                      pizzeria_id : pizzeriaId,
-                      tag_id : tagId
-                    }
-                  });
-
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
-      
-      $http.post(APIpath + "/api/v1/pizzeriatags?key=" + APIkey, data, config)
-      .then(function(response){ 
-        $location.path('/admin/successCreate');
-      }, function (error) {
-        $location.path('/error');
-      });
+      postHttp(ApiConfig.path + "dishes" + ApiConfig.key, data, callback);
     }
     
     // DELETE: Pizzeria.
-    function deletePizzeria(username, password, pizzeriaId){
+    function deletePizzeria(pizzeriaId, callback){
+      var data = JSON.stringify({
+                    token : loginCookie
+                  });
 
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
-      
-      $http.delete(APIpath + "/api/v1/pizzerias/" + pizzeriaId + "?key=" + APIkey, config)
-      .then(function(response){ 
-        $location.path('/admin/successDelete');
-      }, function (error) {
-        $location.path('/error');
-      });
+      deleteHttp(ApiConfig.path + "pizzerias/" + pizzeriaId + ApiConfig.key, data, callback);
     }
     
     // DELETE: Menu.
-    function deleteMenu(username, password, menuId){
-
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
-      
-      $http.delete(APIpath + "/api/v1/menus/" + menuId + "?key=" + APIkey, config)
-      .then(function(response){ 
-        $location.path('/admin/successDelete');
-      }, function (error) {
-        $location.path('/error');
-      });
+    function deleteMenu(menuId, callback){
+      var data = JSON.stringify({
+                    token : loginCookie
+                  });
+                
+      deleteHttp(ApiConfig.path + "menus/" + menuId + ApiConfig.key, data, callback);
     }
     
     // DELETE: Dish.
-    function deleteDish(username, password, dishId){
-
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
-      
-      $http.delete(APIpath + "/api/v1/dishes/" + dishId + "?key=" + APIkey, config)
-      .then(function(response){ 
-        $location.path('/admin/successDelete');
-      }, function (error) {
-        $location.path('/error');
-      });
+    function deleteDish(dishId, callback){
+      var data = JSON.stringify({
+                    token : loginCookie
+                  });
+                  
+      deleteHttp(ApiConfig.path + "dishes/" + dishId + ApiConfig.key, data, callback);
     }
     
     // PUT: Position.
-    function editPosition(username, password, id, address){
+    function editPosition(id, address, callback){
       
       var data = JSON.stringify({
+                    token : loginCookie,
                     position : {
                       address : address
                     }
                   });
-
-      var config = {
-                      headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
-                        "Authorization" : "Basic " + window.btoa(username + ":" + password)
-                      }
-                    };
       
-      $http.put(APIpath + "/api/v1/positions/" + id + "?key=" + APIkey, data, config)
-      .then(function(response){ 
-        $location.path('/admin/successEdit');
-      }, function (error) {
-        $location.path('/error');
-      });
+      putHttp(ApiConfig.path + "positions/" + id + ApiConfig.key, data, callback);
     }
     
-    // PUT: Dish.
-    function editDish(username, password, id, name, ingredients, price){
+    // PUT: Menu.
+    function editMenu(id, name, pizzeria_id, callback){
       
       var data = JSON.stringify({
-                    dish : {
+                    token : loginCookie,
+                    menu : {
                       name : name,
-                      ingredients : ingredients,
-                      price : price
+                      pizzeria_id : pizzeria_id
                     }
                   });
 
+      putHttp(ApiConfig.path + "menus/" + id + ApiConfig.key, data, callback);
+    }
+    
+    // PUT: Dish.
+    function editDish(id, name, ingredients, price, menu_id, callback){
+      
+      var data = JSON.stringify({
+                    token : loginCookie,
+                    dish : {
+                      name : name,
+                      ingredients : ingredients,
+                      price : price,
+                      menu_id : menu_id
+                    }
+                  });
+      
+      putHttp(ApiConfig.path + "dishes/" + id + ApiConfig.key, data, callback);
+    }
+    
+    // POST: Login.
+    function login(username, password, callback){
+      var data = JSON.stringify({
+
+                    });
+      
       var config = {
                       headers: { 
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json",
                         "Authorization" : "Basic " + window.btoa(username + ":" + password)
                       }
                     };
       
-      $http.put(APIpath + "/api/v1/dishes/" + id + "?key=" + APIkey, data, config)
-      .then(function(response){ 
-        $location.path('/admin/successEdit');
-      }, function (error) {
-        $location.path('/error');
-      });
+      $http.post(ApiConfig.path + "apiLogin" + ApiConfig.key, data, config)
+        .then(
+          function(response){ 
+            callback(response);
+          },
+          function (error) {
+            callback(error);
+          }
+        );
+    }
+    
+    // POST: Checks if the User is logged in.
+    function checkAuthStatus(token, callback){
+      var data = JSON.stringify({
+                      token : token
+                    });
+
+      postHttp(ApiConfig.path + "apiAuth" + ApiConfig.key, data, callback);
     }
 
     return {
@@ -425,82 +358,65 @@ PizzaKartaService.$inject = ['$http', '$location', '$route'];
         return markersList;     
       },
       
-      // RETURN: Pizzeria, by Id
-      getOnePizzeria: function(id) {
-        fetchOnePizzeria(id);
-        return onePizzeria;     
-      },
-      
-      // RETURN: Menu, by Pizzeria
-      getMenusByPizzeria: function(id) {
-        fetchMenusByPizzeria(id);
-        return menusList;     
-      },
-      
-      // RETURN: Menu, by Id
-      getMenusById: function(id) {
-        fetchMenusById(id);
-        return menusList;     
-      },
-      
-      // RETURN: Dish, by Id
-      getDishById: function(id) {
-        fetchDishById(id);
-        return dishList;     
+      // RETURN: Pizzeria, by Search word
+      getPizzeriasBySearchWord: function(word) {
+        fetchPizzeriasBySearchWord(word);
+        return markersList;
       },
       
       // POST: Pizzeria 
-      postPizzeria: function(username, password, name, address, tagOne, tagTwo, tagThree, tagFour, tagFive) {
-        postPizzeria(username, password, name, address, tagOne, tagTwo, tagThree, tagFour, tagFive);
-        return "";     
+      postPizzeria: function(name, address, tagOne, tagTwo, tagThree, tagFour, tagFive, callback) {
+        postPizzeria(name, address, tagOne, tagTwo, tagThree, tagFour, tagFive, callback);
       },
       
       // POST: Menu
-      postMenu: function(username, password, name, pizzeriaId) {
-        postMenu(username, password, name, pizzeriaId);
-        return "";     
+      postMenu: function(name, pizzeriaId, callback) {
+        postMenu(name, pizzeriaId, callback);
       },
       
       // POST: Dish
-      postDish: function(username, password, name, ingredients, price, menuId) {
-        postDish(username, password, name, ingredients, price, menuId);
-        return "";     
-      },
-      
-      // POST: PizzeriaTag
-      postPizzeriaTag: function(username, password, pizzeriaId, tagId) {
-        postPizzeriaTag(username, password, pizzeriaId, tagId);
-        return "";     
+      postDish: function(name, ingredients, price, menuId, callback) {
+        postDish(name, ingredients, price, menuId, callback);
       },
       
       // DELETE: Pizzeria
-      deletePizzeria: function(username, password, pizzeriaId) {
-        deletePizzeria(username, password, pizzeriaId);
-        return "";     
+      deletePizzeria: function(pizzeriaId, callback) {
+        deletePizzeria(pizzeriaId, callback);
       },
       
       // DELETE: Menu
-      deleteMenu: function(username, password, menuId) {
-        deleteMenu(username, password, menuId);
-        return "";     
+      deleteMenu: function(menuId, callback) {
+        deleteMenu(menuId, callback);
       },
       
       // DELETE: Dish
-      deleteDish: function(username, password, dishId) {
-        deleteDish(username, password, dishId);
-        return "";     
+      deleteDish: function(dishId, callback) {
+        deleteDish(dishId, callback);
       },
       
       // PUT: Position
-      editPosition: function(username, password, id, address) {
-        editPosition(username, password, id, address);
-        return "";     
+      editPosition: function(id, address, callback) {
+        editPosition(id, address, callback);
+      },
+      
+      // PUT: Menu
+      editMenu: function(id, name, pizzeria_id, callback) {
+        editMenu(id, name, pizzeria_id, callback);
       },
       
       // PUT: Dish
-      editDish: function(username, password, id, name, ingredients, price) {
-        editDish(username, password, id, name, ingredients, price);
-        return "";     
+      editDish: function(id, name, ingredients, price, menu_id, callback) {
+        editDish(id, name, ingredients, price, menu_id, callback);
+      },
+      
+      // POST: Login
+      login: function(username, password, callback) {
+        login(username, password, callback);
+      },
+      
+      // POST: Checks if the User is logged in.
+      checkAuthStatus: function(token, callback) {
+        checkAuthStatus(token, callback);
       }
     };
   }

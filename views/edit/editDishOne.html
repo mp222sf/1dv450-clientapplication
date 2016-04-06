@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Redigera {{ map.editDishObject.name }}</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showEditDish()">Tillbaka</a></div>
+</div>
+
+<br>
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<form name="map.editDishForm" method="post">
+	<div>
+		<span class="error" ng-show="editDishForm.editName.$touched && editDishForm.editName.$invalid">Du måste ange ett namn.</span>
+	</div>
+	
+	<div>
+		<span class="error" ng-show="editDishForm.editIngredients.$touched && editDishForm.editIngredients.$invalid">Du måste ange ingredienser.</span>
+	</div>
+	
+	<div>
+		<span class="error" ng-show="editDishForm.editPrice.$touched && editDishForm.editPrice.$invalid">Du måste ange ett pris.</span>
+	</div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Namn:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="editName" name="editName" data-ng-model="map.editDishObject.name" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Ingredienser:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="editIngredients" name="editIngredients" data-ng-model="map.editDishObject.ingredients" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Pris:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="editPrice" name="editPrice" data-ng-model="map.editDishObject.price" required />
+        </div>
+    </div>
+
+	<br>
+	<input ng-disabled="map.editDishForm.editName.$invalid || map.editDishForm.editIngredients.$invalid || map.editDishForm.editPrice.$invalid" type="submit" name="edit" value="Ändra" data-ng-click="map.editDish(map.editDishObject.id, map.editDishObject.name, map.editDishObject.ingredients, map.editDishObject.price, map.editDishObject.menu_id)" />
+</form>

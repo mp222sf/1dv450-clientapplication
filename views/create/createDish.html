@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="small-9 columns"><h5>Skapa en maträtt</h5></div>
+    <div class="small-3 columns text-right"><a data-ng-click="map.showAdminStart()">Tillbaka</a></div>
+</div>
+
+<div data-ng-show="map.errorBox" class="errorBox">
+    {{ map.errorMessage }}
+</div>
+
+<form name="map.createDishForm" method="post">
+    <!--FIXA-->
+	<div>
+		<span class="error" ng-show="map.createDishForm.createName.$touched && map.createDishForm.createName.$invalid">Du måste ange ett namn.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="map.createDishForm.createIngredients.$touched && map.createDishForm.createIngredients.$invalid">Du måste ange ingredienser.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="map.createDishForm.createPrice.$touched && map.createDishForm.createPrice.$invalid">Du måste ange ett pris.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="map.createDishForm.createPizzeriaId.$touched && map.createDishForm.createPizzeriaId.$invalid">Du måste välja en pizzeria.</span>
+	</div>
+	<div>
+		<span class="error" ng-show="map.createDishForm.createMenuId.$touched && map.createDishForm.createMenuId.$invalid">Du måste välja en meny.</span>
+	</div>
+	<!--FIXA-->
+	
+	<div class="row">
+    	<div class="small-4 columns">
+    	    <p>Namn:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createName" name="createName" data-ng-model="map.formCreateDish.name" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Ingredienser:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="text" id="createIngredients" name="createIngredients" data-ng-model="map.formCreateDish.ingredients" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Pris:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <input type="number" id="createPrice" name="createPrice" data-ng-model="map.formCreateDish.price" required />
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="small-4 columns">
+    	    <p>Pizzeria:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <select name="createPizzeriaId" data-ng-model="map.formCreateDish.pizzeriaid" required>
+                <option ng-repeat="x in map.markersList" value="{{x.id}}">{{x.title}}</option>
+            </select>
+        </div>
+    </div>
+    
+    <div ng-show="map.createDishForm.createPizzeriaId.$valid" class="row">
+    	<div class="small-4 columns text-right">
+    	    <p>Meny:</p>
+        </div>
+        <div class="small-8 columns">
+    	    <select name="createMenuId" data-ng-model="map.formCreateDish.menuid" required>
+                <option ng-repeat="m in map.allMenus | filter:{pizzeria_id: map.formCreateDish.pizzeriaid}" value="{{m.id}}">{{m.name}}</option>
+            </select>
+        </div>
+    </div>
+
+	<br>
+	<input ng-disabled="map.createDishForm.createName.$invalid || map.createDishForm.createIngredients.$invalid || map.createDishForm.createPrice.$invalid || map.createDishForm.createPizzeriaId.$invalid || map.createDishForm.createMenuId.$invalid" type="submit" name="create" value="Skapa" data-ng-click="map.newDish(map.formCreateDish.name, map.formCreateDish.ingredients, map.formCreateDish.price, map.formCreateDish.menuid)" />
+</form>
