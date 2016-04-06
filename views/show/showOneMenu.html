@@ -3,10 +3,12 @@
     <div class="small-3 columns text-right"><a data-ng-click="map.showOnePizzeria(map.pizzeriaOneObject.id)">Tillbaka</a></div>
 </div>
 
-<div data-ng-repeat="d in map.allDishes | filter:{menu_id: map.menuOneObject.id}">
-    <div class="row">
-        <div class="small-9 columns">{{d.name}}</div>
-        <div class="small-3 columns text-right">{{d.price}} kr</div>
+<div data-ng-repeat="d in map.allDishes">
+    <div data-ng-if="d.menu_id == map.menuOneObject.id">
+        <div class="row">
+            <div class="small-9 columns">{{d.name}}</div>
+            <div class="small-3 columns text-right">{{d.price}} kr</div>
+        </div>
+        <div class="small-text">{{d.ingredients}}</div>
     </div>
-    <div class="small-text">{{d.ingredients}}</div>
 </div>
